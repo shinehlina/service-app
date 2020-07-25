@@ -16,7 +16,7 @@
     </parent>
 
     <properties>
-        <current-version>0.1.0</current-version>
+        <current-version>0.1.1</current-version>
         <!-- Нужен для scm -->
         <git.username>andrsuh</git.username>
         <git.repo>service-app</git.repo>
@@ -30,6 +30,7 @@
         <micrometer.version>1.5.2</micrometer.version>
         <simpleclient.version>0.8.1</simpleclient.version>
         <postgres.driver.version>42.2.14</postgres.driver.version>
+        <service.api.version>0.1.0-SNAPSHOT</service.api.version>
 
         <buildnumber-maven-plugin.version>1.4</buildnumber-maven-plugin.version>
         <flyway.version>6.5.1</flyway.version>
@@ -131,6 +132,11 @@
             <groupId>io.prometheus</groupId>
             <artifactId>simpleclient_httpserver</artifactId>
             <version>${simpleclient.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.wine.to.up</groupId>
+            <artifactId>test-service-api</artifactId>
+            <version>${service.api.version}</version>
         </dependency>
     </dependencies>
 
