@@ -37,7 +37,7 @@ public class KafkaController {
     }
 
     @PostMapping(value = "/send/{topicName}/headers")
-    public void sendMessageWithHeaders(@PathVariable String topicName, @RequestParam @Valid ServiceMessage message) {
+    public void sendMessageWithHeaders(@PathVariable String topicName, @RequestBody @Valid ServiceMessage message) {
         AtomicInteger counter = new AtomicInteger(0);
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         Headers headers = new RecordHeaders();
