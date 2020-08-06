@@ -6,7 +6,7 @@
 
     <groupId>com.wine.to.up</groupId>
     <artifactId>test-service</artifactId>
-    <version>${current-version}-SNAPSHOT</version>
+    <version>${current-version}</version>
     <packaging>jar</packaging>
 
     <parent>
@@ -30,7 +30,7 @@
         <micrometer.version>1.5.2</micrometer.version>
         <simpleclient.version>0.8.1</simpleclient.version>
         <postgres.driver.version>42.2.14</postgres.driver.version>
-        <service.api.version>0.1.0-SNAPSHOT</service.api.version>
+        <service.api.version>0.1.0</service.api.version>
 
         <buildnumber-maven-plugin.version>1.4</buildnumber-maven-plugin.version>
         <flyway.version>6.5.1</flyway.version>
@@ -135,8 +135,13 @@
         </dependency>
         <dependency>
             <groupId>com.wine.to.up</groupId>
-            <artifactId>test-service-api</artifactId>
+            <artifactId>service-api</artifactId>
             <version>${service.api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-netflix-eureka-client</artifactId>
+            <version>2.1.1.RELEASE</version>
         </dependency>
     </dependencies>
 
