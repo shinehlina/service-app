@@ -3,7 +3,7 @@ package com.wine.to.up.service.controller;
 import com.google.protobuf.ByteString;
 import com.wine.to.up.api.dto.ServiceMessage;
 import com.wine.to.up.service.service.KafkaSendMessageService;
-import com.wine.to.up.test.api.message.KafkaMessageHeaderOuterClass.KafkaMessageHeader;
+import com.wine.to.up.api.message.KafkaMessageHeaderOuterClass.KafkaMessageHeader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.header.Headers;
@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
-import static com.wine.to.up.test.api.message.KafkaServiceEventOuterClass.KafkaServiceEvent;
+import static com.wine.to.up.api.message.KafkaServiceEventOuterClass.KafkaServiceEvent;
 import static java.util.stream.Collectors.toList;
 
 

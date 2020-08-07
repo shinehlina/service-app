@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableEurekaClient
-@ComponentScan("com.wine.to.up.test")
+@ComponentScan("com.wine.to.up")
 public class ServiceApplication {
 
     public static void main(String[] args) {
