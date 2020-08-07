@@ -3,7 +3,6 @@ package com.wine.to.up.service.kafka;
 import com.wine.to.up.api.ServiceApiProperties;
 import com.wine.to.up.service.domain.entity.Message;
 import com.wine.to.up.service.repository.MessageRepository;
-import com.wine.to.up.test.api.message.KafkaServiceEventOuterClass.KafkaServiceEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,12 +16,9 @@ public class TestTopicKafkaMessageHandler implements KafkaMessageHandler<String>
 
     private final AtomicInteger counter = new AtomicInteger(0);
 
-    private final ServiceApiProperties serviceApiProperties;
-
     @Autowired
     public TestTopicKafkaMessageHandler(MessageRepository messageRepository, ServiceApiProperties serviceApiProperties) {
         this.messageRepository = messageRepository;
-        this.serviceApiProperties = serviceApiProperties;
         log.info("Handler for topic {} is creating...", serviceApiProperties.getTopicName());
     }
 
@@ -31,9 +27,5 @@ public class TestTopicKafkaMessageHandler implements KafkaMessageHandler<String>
         counter.incrementAndGet();
         log.info("Message received from test topic: test, number of messages: {}", counter.get());
         messageRepository.save(new Message(message));
-    }
-
-    public void handle(KafkaServiceEvent kafkaServiceMessage) {
-        //todo
     }
 }
