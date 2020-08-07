@@ -1,11 +1,11 @@
 package com.wine.to.up.service.service;
 
 import com.wine.to.up.api.ServiceApiProperties;
+import com.wine.to.up.api.message.KafkaServiceEventOuterClass.KafkaServiceEvent;
 import com.wine.to.up.service.annotations.InjectEventLogger;
 import com.wine.to.up.service.components.AppMetrics;
 import com.wine.to.up.service.logging.EventLogger;
 import com.wine.to.up.service.logging.NotableEvents;
-import com.wine.to.up.test.api.message.KafkaServiceEventOuterClass.KafkaServiceEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
