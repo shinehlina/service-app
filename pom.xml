@@ -138,11 +138,6 @@
             <artifactId>service-api</artifactId>
             <version>${service.api.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-netflix-eureka-client</artifactId>
-            <version>2.1.1.RELEASE</version>
-        </dependency>
     </dependencies>
 
     <!-- Нужен для buildnumber-maven-plugin -->
