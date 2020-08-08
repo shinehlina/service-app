@@ -1,4 +1,4 @@
-package com.wine.to.up.test.service.kafka;
+package com.wine.to.up.service.kafka;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
