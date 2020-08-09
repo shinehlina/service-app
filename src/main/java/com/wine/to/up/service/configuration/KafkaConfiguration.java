@@ -1,10 +1,13 @@
 package com.wine.to.up.service.configuration;
 
+import com.wine.to.up.api.message.KafkaServiceEventOuterClass.KafkaServiceEvent;
 import com.wine.to.up.service.kafka.BaseKafkaHandler;
 import com.wine.to.up.service.kafka.KafkaMessageHandler;
 import com.wine.to.up.service.kafka.TestTopicKafkaMessageHandler;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +21,8 @@ public class KafkaConfiguration {
     /**
      * Library serialization path
      */
-    private static final String SERIALIZER = "org.apache.kafka.common.serialization.StringSerializer";
+    private static final String STRING_SERIALIZER = "org.apache.kafka.common.serialization.StringSerializer";
+    private static final String PROTOBUF_SERIALIZER = "";
 
     /**
      * Library deserialization path
@@ -38,11 +42,11 @@ public class KafkaConfiguration {
     private String applicationConsumerGroupId;
 
     @Bean
-    public KafkaProducer<String, String> kafkaProducer() {
+    public KafkaProducer<String, KafkaServiceEvent> kafkaProducer() {
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", brokers);
-        properties.setProperty("key.serializer", SERIALIZER);
-        properties.setProperty("value.serializer", SERIALIZER);
+        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
+        properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, STRING_SERIALIZER);
+        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, PROTOBUF_SERIALIZER);
 
         return new KafkaProducer<>(properties);
     }
@@ -54,10 +58,10 @@ public class KafkaConfiguration {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     Properties consumerProperties() {
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", brokers);
-        properties.setProperty("group.id", applicationConsumerGroupId);
-        properties.setProperty("auto.offset.reset", "earliest"); // todo sukhoa figure out the meaning
-        properties.setProperty("key.deserializer", DESERIALIZER);
+        properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
+        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, applicationConsumerGroupId);
+        properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); // todo sukhoa figure out the meaning
+        properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, DESERIALIZER);
         return properties;
     }
 
@@ -81,7 +85,7 @@ public class KafkaConfiguration {
     BaseKafkaHandler<String> anotherTopicHandler(Properties consumerProperties,
                                                  TestTopicKafkaMessageHandler handler) {
         // set appropriate deserializer
-        consumerProperties.setProperty("value.deserializer", DESERIALIZER);
+        consumerProperties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, DESERIALIZER);
 
         // bind consumer with topic name and with appropriate handler
         return new BaseKafkaHandler<>("test", new KafkaConsumer<>(consumerProperties), handler); // todo sukhoa topic property
