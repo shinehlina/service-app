@@ -134,11 +134,6 @@
             <artifactId>service-api</artifactId>
             <version>${service.api.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-netflix-eureka-client</artifactId>
-            <version>2.1.1.RELEASE</version>
-        </dependency>
     </dependencies>
 
     <!-- Нужен для buildnumber-maven-plugin -->
@@ -218,36 +213,15 @@
 
                 <configuration>
                     <repository>${env.DOCKER_REGISTRY_IP}:5000/${project.artifactId}</repository>
+                    <tag>${scmBranch}_${current-version}</tag>
                 </configuration>
 
                 <executions>
                     <execution>
-                        <id>build image</id>
+                        <id>build and push image</id>
                         <phase>deploy</phase>
                         <goals>
                             <goal>build</goal>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>branch tag</id>
-                        <configuration>
-                            <tag>${scmBranch}</tag>
-                        </configuration>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>tag</goal>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>version tag</id>
-                        <configuration>
-                            <tag>${current-version}</tag>
-                        </configuration>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>tag</goal>
                             <goal>push</goal>
                         </goals>
                     </execution>

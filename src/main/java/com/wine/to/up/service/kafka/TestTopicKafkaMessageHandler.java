@@ -1,6 +1,5 @@
 package com.wine.to.up.service.kafka;
 
-import com.wine.to.up.api.ServiceApiProperties;
 import com.wine.to.up.service.domain.entity.Message;
 import com.wine.to.up.service.repository.MessageRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +16,8 @@ public class TestTopicKafkaMessageHandler implements KafkaMessageHandler<String>
     private final AtomicInteger counter = new AtomicInteger(0);
 
     @Autowired
-    public TestTopicKafkaMessageHandler(MessageRepository messageRepository, ServiceApiProperties serviceApiProperties) {
+    public TestTopicKafkaMessageHandler(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
-        log.info("Handler for topic {} is creating...", serviceApiProperties.getTopicName());
     }
 
     @Override
