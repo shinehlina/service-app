@@ -1,13 +1,18 @@
 package com.wine.to.up.service.configuration;
 
 import com.wine.to.up.api.message.KafkaServiceEventOuterClass.KafkaServiceEvent;
+import com.wine.to.up.api.ServiceApiProperties;
 import com.wine.to.up.service.kafka.BaseKafkaHandler;
 import com.wine.to.up.service.kafka.KafkaMessageHandler;
 import com.wine.to.up.service.kafka.TestTopicKafkaMessageHandler;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.OffsetResetStrategy;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +27,6 @@ public class KafkaConfiguration {
      * Library serialization path
      */
     private static final String STRING_SERIALIZER = "org.apache.kafka.common.serialization.StringSerializer";
-    private static final String PROTOBUF_SERIALIZER = "";
 
     /**
      * Library deserialization path
@@ -45,8 +49,8 @@ public class KafkaConfiguration {
     public KafkaProducer<String, KafkaServiceEvent> kafkaProducer() {
         Properties properties = new Properties();
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
-        properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, STRING_SERIALIZER);
-        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, PROTOBUF_SERIALIZER);
+        properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, EventSerializer.class.getName());
 
         return new KafkaProducer<>(properties);
     }
@@ -60,8 +64,8 @@ public class KafkaConfiguration {
         Properties properties = new Properties();
         properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
         properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, applicationConsumerGroupId);
-        properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"); // todo sukhoa figure out the meaning
-        properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, DESERIALIZER);
+        properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, OffsetResetStrategy.EARLIEST.name().toLowerCase()); // todo sukhoa figure out the meaning
+        properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         return properties;
     }
 
@@ -82,12 +86,13 @@ public class KafkaConfiguration {
      * @param handler            which is responsible for handling messages from this topic
      */
     @Bean
-    BaseKafkaHandler<String> anotherTopicHandler(Properties consumerProperties,
+    BaseKafkaHandler<KafkaServiceEvent> anotherTopicHandler(Properties consumerProperties,
+                                                 ServiceApiProperties serviceApiProperties,
                                                  TestTopicKafkaMessageHandler handler) {
-        // set appropriate deserializer
-        consumerProperties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, DESERIALIZER);
+        // set appropriate deserializer for value
+        consumerProperties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, EventDeserializer.class.getName());
 
         // bind consumer with topic name and with appropriate handler
-        return new BaseKafkaHandler<>("test", new KafkaConsumer<>(consumerProperties), handler); // todo sukhoa topic property
+        return new BaseKafkaHandler<>(serviceApiProperties.getTopicName(), new KafkaConsumer<>(consumerProperties), handler); // todo sukhoa topic property
     }
 }
