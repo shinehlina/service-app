@@ -20,7 +20,7 @@ public class KafkaSendMessageService {
     private final KafkaProducer<String, KafkaServiceEvent> producer; // todo sukhoa investigate thread safety
     private final ServiceApiProperties apiProperties;
 
-    private AppMetrics appMetrics;
+    private final AppMetrics appMetrics;
 
     @InjectEventLogger
     @SuppressWarnings("unused")

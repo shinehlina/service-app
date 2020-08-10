@@ -16,6 +16,7 @@
     </parent>
 
     <properties>
+        <!-- При изменении версии нужно поменять версию в profiles/service-app-->
         <current-version>0.1.1</current-version>
         <!-- Нужен для scm -->
         <git.username>andrsuh</git.username>

@@ -2,14 +2,13 @@ package com.wine.to.up.service.controller;
 
 import com.google.protobuf.ByteString;
 import com.wine.to.up.api.dto.ServiceMessage;
-import com.wine.to.up.service.service.KafkaSendMessageService;
 import com.wine.to.up.api.message.KafkaMessageHeaderOuterClass.KafkaMessageHeader;
+import com.wine.to.up.service.service.KafkaSendMessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.header.internals.RecordHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,12 +40,12 @@ public class KafkaController {
         this.kafkaSendMessageService = kafkaSendMessageService;
     }
 
-    @PostMapping(value = "/send/{topicName}")
-    public void sendMessage(@PathVariable String topicName, @RequestParam String message) {
+    @PostMapping(value = "/send")
+    public void sendMessage(@RequestParam String message) {
         sendMessageWithHeaders(new ServiceMessage(Collections.emptyMap(), message));
     }
 
-    @PostMapping(value = "/send/{topicName}/headers")
+    @PostMapping(value = "/send/headers")
     public void sendMessageWithHeaders(@RequestBody @Valid ServiceMessage message) {
         AtomicInteger counter = new AtomicInteger(0);
         ExecutorService executorService = Executors.newFixedThreadPool(10);
