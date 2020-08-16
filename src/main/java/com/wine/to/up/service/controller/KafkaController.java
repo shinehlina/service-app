@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,6 +42,7 @@ public class KafkaController {
 
     @PostMapping(value = "/send")
     public void sendMessage(@RequestParam String message) {
+        log.debug("Request for sending {}", message);
         sendMessageWithHeaders(new ServiceMessage(Collections.emptyMap(), message));
     }
 
