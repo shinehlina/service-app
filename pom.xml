@@ -158,10 +158,6 @@
     <repositories>
         <repository>
             <id>snapshots</id>
-            <url>http://77.234.215.138:48082/artifactory/libs-snapshot-local</url>
-        </repository>
-        <repository>
-            <id>snapshots</id>
             <url>http://artifactory:8081/artifactory/libs-snapshot-local</url>
         </repository>
     </repositories>
