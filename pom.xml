@@ -6,7 +6,7 @@
 
     <groupId>com.wine.to.up</groupId>
     <artifactId>test-service</artifactId>
-    <version>${current-version}</version>
+    <version>${current-version}-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <parent>
@@ -16,8 +16,7 @@
     </parent>
 
     <properties>
-        <!-- При изменении версии нужно поменять версию в profiles/service-app-->
-        <current-version>0.1.2-SNAPSHOT</current-version>
+        <current-version>0.1.1</current-version>
         <!-- Нужен для scm -->
         <git.username>andrsuh</git.username>
         <git.repo>service-app</git.repo>
@@ -157,7 +156,7 @@
     <!-- Нужен для подключения зависимостей из libs-snapshot-local в jfrog artifactory -->
     <repositories>
         <repository>
-            <id>reader-snapshots</id>
+            <id>snapshots</id>
             <url>http://artifactory:8081/artifactory/libs-snapshot-local</url>
         </repository>
     </repositories>
