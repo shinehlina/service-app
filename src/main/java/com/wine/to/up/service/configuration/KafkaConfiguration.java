@@ -7,8 +7,10 @@ import com.wine.to.up.service.kafka.KafkaMessageHandler;
 import com.wine.to.up.service.kafka.TestTopicKafkaMessageHandler;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.OffsetResetStrategy;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -21,16 +23,6 @@ import java.util.Properties;
 @Configuration
 public class KafkaConfiguration {
     /**
-     * Library serialization path
-     */
-    private static final String STRING_SERIALIZER = "org.apache.kafka.common.serialization.StringSerializer";
-
-    /**
-     * Library deserialization path
-     */
-    private static final String DESERIALIZER = "org.apache.kafka.common.serialization.StringDeserializer";
-
-    /**
      * List of kafka servers
      */
     @Value("${spring.kafka.bootstrap-server}")
@@ -42,6 +34,9 @@ public class KafkaConfiguration {
     @Value("${spring.kafka.consumer.group-id}")
     private String applicationConsumerGroupId;
 
+    /**
+     * Configure producer. Define producer that send events to string topic
+     */
     @Bean
     public KafkaProducer<String, KafkaServiceEvent> kafkaProducer() {
         Properties properties = new Properties();
@@ -59,10 +54,11 @@ public class KafkaConfiguration {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     Properties consumerProperties() {
         Properties properties = new Properties();
-        properties.setProperty("bootstrap.servers", brokers);
-        properties.setProperty("group.id", applicationConsumerGroupId);
-        properties.setProperty("auto.offset.reset", "earliest"); // todo sukhoa figure out the meaning
-        properties.setProperty("key.deserializer", DESERIALIZER);
+        properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers);
+        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, applicationConsumerGroupId);
+        //in case of consumer crashing, new consumer will read all messages from committed offset
+        properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, OffsetResetStrategy.EARLIEST.name().toLowerCase());
+        properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         return properties;
     }
 

@@ -130,11 +130,6 @@
             <version>${simpleclient.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.9.2</version>
-        </dependency>
-        <dependency>
             <groupId>com.wine.to.up</groupId>
             <artifactId>service-api</artifactId>
             <version>${service.api.version}</version>
@@ -157,14 +152,6 @@
             <url>http://artifactory:8081/artifactory/libs-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
-
-    <!-- Нужен для подключения зависимостей из libs-snapshot-local в jfrog artifactory -->
-    <repositories>
-        <repository>
-            <id>snapshots</id>
-            <url>http://artifactory:8081/artifactory/libs-snapshot-local</url>
-        </repository>
-    </repositories>
 
     <build>
         <plugins>
