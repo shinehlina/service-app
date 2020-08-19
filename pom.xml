@@ -131,7 +131,7 @@
         </dependency>
         <dependency>
             <groupId>com.wine.to.up</groupId>
-            <artifactId>service-api</artifactId>
+            <artifactId>test-service-api</artifactId>
             <version>${service.api.version}</version>
         </dependency>
     </dependencies>
