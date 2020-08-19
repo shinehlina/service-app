@@ -26,13 +26,18 @@ import java.util.stream.Stream;
 import static com.wine.to.up.api.message.KafkaServiceEventOuterClass.KafkaServiceEvent;
 import static java.util.stream.Collectors.toList;
 
-
+/**
+ * REST controller of the service
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/kafka")
 @Slf4j
 public class KafkaController {
 
+    /**
+     * Service for sending messages
+     */
     private KafkaSendMessageService kafkaSendMessageService;
 
     @Autowired
@@ -40,11 +45,19 @@ public class KafkaController {
         this.kafkaSendMessageService = kafkaSendMessageService;
     }
 
+    /**
+     * Sends messages into the topic "test".
+     * In fact now this service listen to that topic too. That means that it causes sending and reading messages
+     */
     @PostMapping(value = "/send")
     public void sendMessage(@RequestParam String message) {
         sendMessageWithHeaders(new ServiceMessage(Collections.emptyMap(), message));
     }
 
+    /**
+     * See {@link #sendMessage(String)}
+     * Sends message with headers
+     */
     @PostMapping(value = "/send/headers")
     public void sendMessageWithHeaders(@RequestBody @Valid ServiceMessage message) {
         AtomicInteger counter = new AtomicInteger(0);

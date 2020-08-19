@@ -12,16 +12,29 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+/**
+ * Service for sending messages
+ */
 @Service
 @Slf4j
 public class KafkaSendMessageService {
-
+    /**
+     * Producer that is configured for sending {@link KafkaServiceEvent}
+     */
     private final KafkaProducer<String, KafkaServiceEvent> producer; // todo sukhoa investigate thread safety
+    /**
+     * Properties from api. Defines topic
+     */
     private final ServiceApiProperties apiProperties;
 
+    /**
+     * Important metrics. Integrated with Micrometer
+     */
     private final AppMetrics appMetrics;
 
+    /**
+     * Logger for "noticeable" (important) events
+     */
     @InjectEventLogger
     @SuppressWarnings("unused")
     private EventLogger eventLogger;
@@ -35,6 +48,9 @@ public class KafkaSendMessageService {
         this.apiProperties = apiProperties;
     }
 
+    /**
+     * Sends a single message to the topic
+     */
     public void sendMessage(KafkaServiceEvent event) {
         String topicName = apiProperties.getTopicName();
         ProducerRecord<String, KafkaServiceEvent> record = new ProducerRecord<>(topicName, event);
