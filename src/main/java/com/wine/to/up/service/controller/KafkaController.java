@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.header.internals.RecordHeaders;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Collections;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,20 +38,17 @@ public class KafkaController {
     /**
      * Service for sending messages
      */
-    private KafkaSendMessageService kafkaSendMessageService;
-
-    @Autowired
-    public KafkaController(KafkaSendMessageService kafkaSendMessageService) {
-        this.kafkaSendMessageService = kafkaSendMessageService;
-    }
+    private final KafkaSendMessageService kafkaSendMessageService;
+    private UUID id = UUID.randomUUID();
 
     /**
      * Sends messages into the topic "test".
      * In fact now this service listen to that topic too. That means that it causes sending and reading messages
      */
     @PostMapping(value = "/send")
-    public void sendMessage(@RequestParam String message) {
-        sendMessageWithHeaders(new ServiceMessage(Collections.emptyMap(), message));
+    public void sendMessage(@RequestBody String message) {
+        log.info("Request for sending {}, id: {}", message, id);
+//        sendMessageWithHeaders(new ServiceMessage(Collections.emptyMap(), message));
     }
 
     /**
