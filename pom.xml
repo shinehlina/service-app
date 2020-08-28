@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.wine.to.up</groupId>
-    <artifactId>test-service</artifactId>
+    <artifactId>demo-service</artifactId>
     <version>${current-version}-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -135,7 +135,7 @@
         </dependency>
         <dependency>
             <groupId>com.wine.to.up</groupId>
-            <artifactId>test-service-api</artifactId>
+            <artifactId>demo-service-api</artifactId>
             <version>${service.api.version}</version>
         </dependency>
     </dependencies>
