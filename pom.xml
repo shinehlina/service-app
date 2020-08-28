@@ -207,7 +207,7 @@
                 </dependencies>
 
                 <configuration>
-                    <repository>registry:5000/${project.artifactId}</repository>
+                    <repository>172.19.0.3:5000/${project.artifactId}</repository>
                     <tag>${scmBranch}_${current-version}</tag>
                 </configuration>
 
