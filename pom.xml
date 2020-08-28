@@ -207,7 +207,7 @@
                 </dependencies>
 
                 <configuration>
-                    <repository>${env.DOCKER_REGISTRY_IP}:5000/${project.artifactId}</repository>
+                    <repository>registry:5000/${project.artifactId}</repository>
                     <tag>${scmBranch}_${current-version}</tag>
                 </configuration>
 
