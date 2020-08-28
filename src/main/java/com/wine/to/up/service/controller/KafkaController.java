@@ -9,13 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.header.internals.RecordHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -32,6 +31,7 @@ import static java.util.stream.Collectors.toList;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/kafka")
+@Validated
 @Slf4j
 public class KafkaController {
 
@@ -50,7 +50,7 @@ public class KafkaController {
      * In fact now this service listen to that topic too. That means that it causes sending and reading messages
      */
     @PostMapping(value = "/send")
-    public void sendMessage(@RequestParam String message) {
+    public void sendMessage(@RequestBody String message) {
         sendMessageWithHeaders(new ServiceMessage(Collections.emptyMap(), message));
     }
 
@@ -59,7 +59,7 @@ public class KafkaController {
      * Sends message with headers
      */
     @PostMapping(value = "/send/headers")
-    public void sendMessageWithHeaders(@RequestBody @Valid ServiceMessage message) {
+    public void sendMessageWithHeaders(@RequestBody ServiceMessage message) {
         AtomicInteger counter = new AtomicInteger(0);
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         Headers headers = new RecordHeaders();
